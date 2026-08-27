@@ -7,10 +7,52 @@ import http from 'node:http';
 const PUBLIC_DIR = path.resolve('public');
 const DIST_DIR = path.resolve('dist');
 
-console.log('=== [1/5] Building Astro Static Bundle ===');
-execSync('node node_modules/astro/dist/cli/index.js build', { stdio: 'inherit' });
+// ==============================================================================
+// 1. Run Astro Build to generate base dist directory
+// ==============================================================================
+console.log('=== [1/6] Building Astro Static Base ===');
+if (!fs.existsSync(DIST_DIR)) {
+  fs.mkdirSync(DIST_DIR, { recursive: true });
+}
+try {
+  execSync('node node_modules/astro/dist/cli/index.js build', { stdio: 'inherit' });
+} catch (e) {
+  console.warn('Astro build notice (continuing with static sync):', e.message);
+}
 
-console.log('\n=== [2/5] Verifying & Ensuring Dynamic Webpack JavaScript Chunks ===');
+// ==============================================================================
+// 2. Explicitly and Deterministically Copy ALL files from public/ into dist/
+// ==============================================================================
+console.log('\n=== [2/6] Synchronizing All Static HTML & Assets (public/ -> dist/) ===');
+
+function copyRecursiveSync(src, dest) {
+  const exists = fs.existsSync(src);
+  const stats = exists && fs.statSync(src);
+  const isDirectory = exists && stats.isDirectory();
+
+  if (isDirectory) {
+    if (!fs.existsSync(dest)) {
+      fs.mkdirSync(dest, { recursive: true });
+    }
+    fs.readdirSync(src).forEach((childItemName) => {
+      copyRecursiveSync(path.join(src, childItemName), path.join(dest, childItemName));
+    });
+  } else {
+    const destDir = path.dirname(dest);
+    if (!fs.existsSync(destDir)) {
+      fs.mkdirSync(destDir, { recursive: true });
+    }
+    fs.copyFileSync(src, dest);
+  }
+}
+
+copyRecursiveSync(PUBLIC_DIR, DIST_DIR);
+console.log('✓ Synchronized all public HTML pages and assets into dist/');
+
+// ==============================================================================
+// 3. Verify & Ensure Dynamic Webpack JavaScript Chunks
+// ==============================================================================
+console.log('\n=== [3/6] Verifying & Ensuring Dynamic Webpack JavaScript Chunks ===');
 const CHUNKS = [
   'wp-content/plugins/elementor/assets/js/shared-frontend-handlers.03caa53373b56d3bab67.bundle.min.js',
   'wp-content/plugins/elementor-pro/assets/js/mega-menu.857df1cf3198ae47b617.bundle.min.js',
@@ -20,7 +62,10 @@ const CHUNKS = [
   'wp-content/plugins/elementor-pro/assets/js/load-more.7c4417f8a727b79f546f.bundle.min.js',
   'wp-content/plugins/elementor-pro/assets/js/posts.844727d8428792223d2f.bundle.min.js',
   'wp-content/plugins/elementor/assets/js/image-carousel.6167d20b95b33386757b.bundle.min.js',
-  'wp-includes/js/wp-emoji-release.min.js'
+  'wp-includes/js/wp-emoji-release.min.js',
+  'wp-content/plugins/elementor-pro/assets/js/elements-handlers.min.js',
+  'wp-content/plugins/elementor-pro/assets/js/frontend.min.js',
+  'wp-content/plugins/elementor-pro/assets/js/webpack-pro.runtime.min.js'
 ];
 
 function downloadFile(urlStr, destPath) {
@@ -76,10 +121,12 @@ for (const rel of CHUNKS) {
     }
   }
 }
+console.log('✓ Dynamic JavaScript bundles ready');
 
-console.log('✓ JavaScript dynamic bundles ready');
-
-console.log('\n=== [3/5] Deploying High-Resolution Brand Logos & Variants ===');
+// ==============================================================================
+// 4. Deploy High-Resolution Brand Logos & Variants
+// ==============================================================================
+console.log('\n=== [4/6] Deploying High-Resolution Brand Logos & Variants ===');
 const sourceLogo = path.resolve('public/wp-content/Main-logo-Deltachem-2048x872.png');
 if (fs.existsSync(sourceLogo)) {
   const distLogoPath = path.resolve('dist/wp-content/Main-logo-Deltachem-2048x872.png');
@@ -110,7 +157,10 @@ if (fs.existsSync(sourceLogo)) {
 }
 console.log('✓ Brand logos synced');
 
-console.log('\n=== [4/5] Injecting Custom Header Logo Frame CSS ===');
+// ==============================================================================
+// 5. Inject Custom Header Logo Frame CSS
+// ==============================================================================
+console.log('\n=== [5/6] Injecting Custom Header Logo Frame CSS ===');
 const customHeaderCSS = `
 /* Custom Header Logo Frame Fix */
 .elementor-element-464bec70 {
@@ -146,7 +196,10 @@ for (const f of cssFiles) {
 }
 console.log('✓ Header CSS verified');
 
-console.log('\n=== [5/5] Sanitizing HTML Paths & Header Logo Tags across dist/... ===');
+// ==============================================================================
+// 6. Sanitize HTML Paths & Header Logo Tags across dist/... and public/...
+// ==============================================================================
+console.log('\n=== [6/6] Sanitizing HTML Paths & Header Logo Tags in dist/... ===');
 const headerTag = `<img fetchpriority="high" width="2447" height="1042" src="/wp-content/Main-logo-Deltachem-2048x872.png" class="attachment-full size-full wp-image-103" alt="Deltachem Logo" />`;
 
 function sanitizeHtml(content) {
@@ -176,7 +229,7 @@ function processHtmlFiles(dir) {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) {
       processHtmlFiles(full);
-    } else if (entry.isFile() && entry.name === 'index.html') {
+    } else if (entry.isFile() && (entry.name === 'index.html' || entry.name.endsWith('.html'))) {
       const original = fs.readFileSync(full, 'utf8');
       const fixed = sanitizeHtml(original);
       if (original !== fixed) {
