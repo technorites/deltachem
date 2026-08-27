@@ -38,6 +38,15 @@ jobs:
       - name: Build Production Assets
         run: npm run build
 
+      - name: Inspect Production Build
+        run: |
+          echo "=== DIST ROOT ==="
+          find dist -maxdepth 2 -type f | sort | head -200
+          echo "=== REQUIRED PAGES ==="
+          test -f dist/index.html && echo "FOUND dist/index.html" || { echo "MISSING dist/index.html"; exit 1; }
+          test -f dist/products/index.html && echo "FOUND products/index.html" || { echo "MISSING products/index.html"; exit 1; }
+          test -f dist/b2b/index.html && echo "FOUND b2b/index.html" || { echo "MISSING b2b/index.html"; exit 1; }
+
       - name: Start Production Server
         run: |
           node server.mjs &
