@@ -229,7 +229,7 @@ function processHtmlFiles(dir) {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) {
       processHtmlFiles(full);
-    } else if (entry.isFile() && (entry.name === 'index.html' || entry.name.endsWith('.html'))) {
+    } else if (entry.isFile() && (entry.name === 'index.html' || entry.name === '404.html')) {
       const original = fs.readFileSync(full, 'utf8');
       const fixed = sanitizeHtml(original);
       if (original !== fixed) {
