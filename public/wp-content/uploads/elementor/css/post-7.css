@@ -1,0 +1,43 @@
+.elementor-kit-7{--e-global-color-primary:#6EC1E4;--e-global-color-secondary:#54595F;--e-global-color-text:#7A7A7A;--e-global-color-accent:#61CE70;--e-global-color-0fb1c82:#17304E;--e-global-color-b6ada1a:#066C40;--e-global-color-33aca4d:#00973B;--e-global-color-23d8e54:#94B654;--e-global-color-ebfcb53:#FAFAFA;--e-global-typography-primary-font-family:"Roboto";--e-global-typography-primary-font-weight:600;--e-global-typography-secondary-font-family:"Roboto Slab";--e-global-typography-secondary-font-weight:400;--e-global-typography-text-font-family:"Roboto";--e-global-typography-text-font-weight:400;--e-global-typography-accent-font-family:"Roboto";--e-global-typography-accent-font-weight:500;--e-global-typography-2a55b4e-font-family:"Frederic";--e-global-typography-2a55b4e-font-size:clamp(3rem, 2.5385rem + 2.0513vw, 4rem);--e-global-typography-2a55b4e-font-weight:bold;--e-global-typography-fb395fb-font-family:"Frederic";--e-global-typography-fb395fb-font-size:clamp(2.4rem, 2.1231rem + 1.2308vw, 3rem);--e-global-typography-fb395fb-font-weight:bold;--e-global-typography-4c4b046-font-family:"Frederic";--e-global-typography-4c4b046-font-size:clamp(2.1rem, 1.9154rem + 0.8205vw, 2.5rem);--e-global-typography-4c4b046-font-weight:bold;--e-global-typography-1bcc30d-font-family:"Frederic";--e-global-typography-1bcc30d-font-size:clamp(2.1rem, 1.9154rem + 0.8205vw, 2.5rem);--e-global-typography-1bcc30d-font-weight:bold;--e-global-typography-eb71fb4-font-family:"Frederic";--e-global-typography-eb71fb4-font-size:clamp(1.6rem, 1.5308rem + 0.3077vw, 1.75rem);--e-global-typography-eb71fb4-font-weight:bold;--e-global-typography-03e855c-font-family:"Frederic";--e-global-typography-03e855c-font-size:clamp(1.4rem, 1.3538rem + 0.2051vw, 1.5rem);--e-global-typography-03e855c-font-weight:bold;--e-global-typography-99415f9-font-family:"Frederic";--e-global-typography-99415f9-font-size:clamp(1.4rem, 1.3538rem + 0.2051vw, 1.5rem);--e-global-typography-99415f9-font-weight:bold;--e-global-typography-60e93a1-font-family:"Roboto";--e-global-typography-60e93a1-font-size:1.2rem;--e-global-typography-7691d7f-font-family:"Roboto";--e-global-typography-7691d7f-font-size:1rem;--e-global-typography-76d3691-font-family:"Roboto";--e-global-typography-76d3691-font-size:1rem;--e-global-typography-76d3691-font-weight:700;--e-global-typography-17558f7-font-family:"Roboto";--e-global-typography-17558f7-font-size:1.125rem;--e-global-typography-f541ced-font-family:"Roboto";--e-global-typography-f541ced-font-size:0.875rem;}.elementor-kit-7 e-page-transition{background-color:#FFBC7D;}.elementor-section.elementor-section-boxed > .elementor-container{max-width:1140px;}.e-con{--container-max-width:1140px;}.elementor-widget:not(:last-child){margin-block-end:20px;}.elementor-element{--widgets-spacing:20px 20px;--widgets-spacing-row:20px;--widgets-spacing-column:20px;}{}h1.entry-title{display:var(--page-title-display);}@media(max-width:1024px){.elementor-section.elementor-section-boxed > .elementor-container{max-width:1024px;}.e-con{--container-max-width:1024px;}}@media(max-width:767px){.elementor-section.elementor-section-boxed > .elementor-container{max-width:767px;}.e-con{--container-max-width:767px;}}/* Start Custom Fonts CSS */@font-face {
+	font-family: 'Frederic';
+	font-style: normal;
+	font-weight: normal;
+	font-display: auto;
+	src: url('http://www.deltachem.pro/wp-content/uploads/2024/10/Frederic-Regular.ttf') format('truetype');
+}
+@font-face {
+	font-family: 'Frederic';
+	font-style: italic;
+	font-weight: normal;
+	font-display: auto;
+	src: url('http://www.deltachem.pro/wp-content/uploads/2024/10/Frederic-Regular-Italic.ttf') format('truetype');
+}
+@font-face {
+	font-family: 'Frederic';
+	font-style: normal;
+	font-weight: bold;
+	font-display: auto;
+	src: url('http://www.deltachem.pro/wp-content/uploads/2024/10/Frederic-Bold.ttf') format('truetype');
+}
+@font-face {
+	font-family: 'Frederic';
+	font-style: italic;
+	font-weight: bold;
+	font-display: auto;
+	src: url('http://www.deltachem.pro/wp-content/uploads/2024/10/Frederic-Bold-Italic.ttf') format('truetype');
+}
+@font-face {
+	font-family: 'Frederic';
+	font-style: normal;
+	font-weight: 600;
+	font-display: auto;
+	src: url('http://www.deltachem.pro/wp-content/uploads/2024/10/Frederic-Black.ttf') format('truetype');
+}
+@font-face {
+	font-family: 'Frederic';
+	font-style: italic;
+	font-weight: 600;
+	font-display: auto;
+	src: url('http://www.deltachem.pro/wp-content/uploads/2024/10/Frederic-Black-Italic.ttf') format('truetype');
+}
+/* End Custom Fonts CSS */

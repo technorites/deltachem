@@ -1,0 +1,103 @@
+name: CI/CD Pipeline & Auto-Deploy
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ==========================================
+  # 1. Continuous Integration (Build & Audit)
+  # ==========================================
+  test:
+    name: Build & Verify All Pages
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Production Assets
+        run: npm run build
+
+      - name: Start Production Server
+        run: |
+          node server.mjs &
+          sleep 3
+
+      - name: Run Full 30-Page Health Audit & Asset Tests
+        run: npm test
+
+  # ==========================================
+  # 2. Continuous Deployment (Auto Cloud Deploy)
+  # ==========================================
+  deploy:
+    name: Auto-Deploy to Cloud Server
+    needs: test
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to Cloud Server via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SERVER_PORT || 22 }}
+          script: |
+            set -e
+            DEPLOY_PATH="${{ secrets.SERVER_PATH || '/var/www/deltachem' }}"
+            
+            echo "🚀 Deploying to $DEPLOY_PATH..."
+            mkdir -p $DEPLOY_PATH
+            cd $DEPLOY_PATH
+
+            # If not a git repo yet, clone; otherwise pull
+            if [ ! -d .git ]; then
+              git clone https://github.com/${{ github.repository }}.git .
+            else
+              git fetch --all
+              git reset --hard origin/${{ github.ref_name }}
+            fi
+
+            # Deploy using Docker Compose
+            if command -v docker > /dev/null 2>&1 && command -v docker compose > /dev/null 2>&1; then
+              echo "⚡ Building and restarting Docker containers..."
+              docker compose down --remove-orphans || true
+              docker compose up -d --build --remove-orphans
+              docker image prune -f || true
+              echo "✅ Docker deployment complete!"
+            # Fallback to Node.js + PM2 if Docker is not installed
+            elif command -v pm2 > /dev/null 2>&1; then
+              echo "⚡ Deploying with Node.js & PM2..."
+              npm ci
+              npm run build
+              pm2 restart ecosystem.config.cjs || pm2 start ecosystem.config.cjs
+              echo "✅ PM2 deployment complete!"
+            else
+              echo "⚡ Running npm build..."
+              npm ci
+              npm run build
+              echo "✅ Build complete!"
+            fi
+
+            echo "🎉 Successfully deployed Deltachem to production!"

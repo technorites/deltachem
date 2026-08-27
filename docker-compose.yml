@@ -1,0 +1,11 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: deltachem-web
+    restart: always
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=production

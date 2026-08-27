@@ -1,0 +1,16 @@
+{
+  "name": "deltachem",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "node scripts/build-prod.mjs",
+    "start": "node server.mjs",
+    "dev": "node server.mjs",
+    "preview": "node server.mjs",
+    "test": "node scripts/test-prod.mjs"
+  },
+  "dependencies": {
+    "astro": "^5.0.0",
+    "puppeteer-core": "^25.9.0"
+  }
+}

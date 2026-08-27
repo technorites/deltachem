@@ -1,0 +1,30 @@
+# Replace with your actual domain or keep :80 for direct HTTP
+:80 {
+    root * /app/dist
+    encode zstd gzip
+
+    # Security Headers
+    header {
+        X-Content-Type-Options nosniff
+        X-Frame-Options SAMEORIGIN
+        X-XSS-Protection "1; mode=block"
+        Referrer-Policy strict-origin-when-cross-origin
+        Access-Control-Allow-Origin *
+    }
+
+    # Static caching (1 year immutable)
+    @static {
+        path /wp-content/* /wp-includes/* *.css *.js *.mjs *.png *.jpg *.jpeg *.webp *.svg *.woff *.woff2 *.ttf *.ico
+    }
+    header @static Cache-Control "public, max-age=31536000, immutable"
+
+    # HTML dynamic revalidation
+    @html {
+        path *.html /
+    }
+    header @html Cache-Control "public, max-age=0, must-revalidate"
+
+    # Try files with clean URLs, fallback to 404
+    try_files {path} {path}/ {path}/index.html /404.html
+    file_server
+}
