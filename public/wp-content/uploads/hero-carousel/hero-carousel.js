@@ -97,7 +97,7 @@
       });
     }
 
-    // Event Listeners for Dots
+    // Event Listeners for Dots (click only, hover ignored)
     dots.forEach((dot, idx) => {
       dot.addEventListener('click', (e) => {
         e.preventDefault();
@@ -137,6 +137,14 @@
       } else if (e.key === 'ArrowLeft') {
         prevSlide();
       }
+    });
+
+    // Explicitly block/disable all mouse hover events (mouseenter, mouseleave, mouseover, mouseout)
+    // so hover is strictly false and never affects carousel playback
+    ['mouseenter', 'mouseleave', 'mouseover', 'mouseout'].forEach((evt) => {
+      heroSection.addEventListener(evt, (e) => {
+        e.stopPropagation();
+      }, true);
     });
 
     // Initial trigger
