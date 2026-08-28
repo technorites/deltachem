@@ -1,0 +1,207 @@
+/* ==========================================================================
+   DeltaChem Global Action Animations & Modern UI Enhancements Engine
+   ========================================================================== */
+
+:root {
+  --dc-accent-green: #00D466;
+  --dc-accent-glow: rgba(0, 212, 102, 0.4);
+  --dc-dark-bg: #091E23;
+  --dc-glass-bg: rgba(255, 255, 255, 0.06);
+  --dc-glass-border: rgba(255, 255, 255, 0.15);
+  --dc-transition-fast: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --dc-transition-spring: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dc-transition-smooth: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* --------------------------------------------------------------------------
+   1. Interactive Button & Action CTAs (Hover, Active Press, Ripple)
+   -------------------------------------------------------------------------- */
+.elementor-button,
+button,
+.ast-button,
+.wp-block-button__link {
+  position: relative !important;
+  overflow: hidden !important;
+  transition: transform var(--dc-transition-spring), box-shadow var(--dc-transition-fast), background-color var(--dc-transition-fast), border-color var(--dc-transition-fast) !important;
+  will-change: transform, box-shadow !important;
+}
+
+.elementor-button:hover,
+button:hover,
+.ast-button:hover,
+.wp-block-button__link:hover {
+  transform: translateY(-3px) scale(1.02) !important;
+  box-shadow: 0 10px 25px -5px var(--dc-accent-glow), 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.elementor-button:active,
+button:active,
+.ast-button:active,
+.wp-block-button__link:active {
+  transform: translateY(1px) scale(0.97) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Button Ripple Dynamic Overlay */
+.dc-ripple-effect {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  transform: scale(0);
+  animation: dcRipple 0.6s linear;
+  pointer-events: none;
+}
+
+@keyframes dcRipple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. Card & Container Hover Animations (Glassmorphism & Lift)
+   -------------------------------------------------------------------------- */
+.elementor-post__card,
+.elementor-widget-icon-box,
+.elementor-widget-container:has(> .elementor-image),
+.elementor-column:has(.elementor-widget-image),
+.e-con-child {
+  transition: transform var(--dc-transition-smooth), box-shadow var(--dc-transition-smooth), border-color var(--dc-transition-fast) !important;
+}
+
+.elementor-post__card:hover,
+.elementor-widget-icon-box:hover {
+  transform: translateY(-6px) !important;
+  box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.2), 0 0 20px rgba(0, 212, 102, 0.15) !important;
+}
+
+/* Dynamic Image Zoom on Hover */
+.elementor-post__thumbnail img,
+.elementor-widget-image img {
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+.elementor-post__card:hover .elementor-post__thumbnail img,
+.elementor-widget-image:hover img {
+  transform: scale(1.05) !important;
+}
+
+/* --------------------------------------------------------------------------
+   3. Viewport Scroll Reveal Animations
+   -------------------------------------------------------------------------- */
+.dc-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.dc-reveal.dc-in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.dc-reveal-scale {
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.dc-reveal-scale.dc-in-view {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.dc-reveal-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dc-reveal-left.dc-in-view {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.dc-reveal-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dc-reveal-right.dc-in-view {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* --------------------------------------------------------------------------
+   4. Form Input Focus Ring & Animations
+   -------------------------------------------------------------------------- */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="url"],
+textarea,
+select {
+  transition: border-color var(--dc-transition-fast), box-shadow var(--dc-transition-fast), transform var(--dc-transition-fast) !important;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+input[type="url"]:focus,
+textarea:focus,
+select:focus {
+  border-color: #00D466 !important;
+  box-shadow: 0 0 0 4px rgba(0, 212, 102, 0.25) !important;
+  transform: translateY(-1px) !important;
+  outline: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   5. Header & Navigation Animations
+   -------------------------------------------------------------------------- */
+.main-header-menu .menu-item a {
+  position: relative !important;
+  transition: color var(--dc-transition-fast) !important;
+}
+
+.main-header-menu .menu-item a::after {
+  content: '' !important;
+  position: absolute !important;
+  bottom: -2px !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 2px !important;
+  background: linear-gradient(90deg, #00D466 0%, #00973B 100%) !important;
+  transform: scaleX(0) !important;
+  transform-origin: right !important;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.main-header-menu .menu-item a:hover::after,
+.main-header-menu .menu-item.current-menu-item a::after {
+  transform: scaleX(1) !important;
+  transform-origin: left !important;
+}
+
+/* Dynamic Glowing Accent Text Highlight */
+.dc-glow-text {
+  background: linear-gradient(135deg, #00D466 0%, #00973B 50%, #80ED99 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+  animation: dcPulseGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes dcPulseGlow {
+  0% {
+    filter: drop-shadow(0 0 2px rgba(0, 212, 102, 0.2));
+  }
+  100% {
+    filter: drop-shadow(0 0 12px rgba(0, 212, 102, 0.6));
+  }
+}

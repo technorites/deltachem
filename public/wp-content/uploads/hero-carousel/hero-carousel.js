@@ -22,7 +22,7 @@
 
     let currentIndex = 0;
     const totalSlides = slides.length;
-    const slideDuration = 4500; // 4.5 seconds per slide
+    const slideDuration = 3500; // 3.5 seconds per slide
     let timer = null;
 
     function showSlide(index) {
@@ -139,10 +139,11 @@
       }
     });
 
-    // Explicitly block/disable all mouse hover events (mouseenter, mouseleave, mouseover, mouseout)
+    // Explicitly block/disable all mouse and pointer hover events
     // so hover is strictly false and never affects carousel playback
-    ['mouseenter', 'mouseleave', 'mouseover', 'mouseout'].forEach((evt) => {
+    ['mouseenter', 'mouseleave', 'mouseover', 'mouseout', 'pointerenter', 'pointerleave', 'pointerover', 'pointerout'].forEach((evt) => {
       heroSection.addEventListener(evt, (e) => {
+        e.stopImmediatePropagation();
         e.stopPropagation();
       }, true);
     });

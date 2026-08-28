@@ -207,6 +207,22 @@ function sanitizeHtml(content) {
   // Fix header logo tag
   rewritten = rewritten.replace(/<img[^>]*wp-image-103[^>]*>/gi, headerTag);
 
+  // Inject global animations CSS in <head> if missing
+  if (!rewritten.includes('animations.css')) {
+    rewritten = rewritten.replace(
+      '</head>',
+      `  <link rel='stylesheet' id='deltachem-global-animations-css' href='/wp-content/uploads/global-animations/animations.css?v=1' media='all' />\n</head>`
+    );
+  }
+
+  // Inject global animations JS before </body> if missing
+  if (!rewritten.includes('animations.js')) {
+    rewritten = rewritten.replace(
+      '</body>',
+      `  <script src="/wp-content/uploads/global-animations/animations.js?v=1" defer></script>\n</body>`
+    );
+  }
+
   // Fix all corrupted relative references to wp-content and wp-includes
   rewritten = rewritten.replace(/([\"\'])(?:(?:\.\.|\.)+\/)+wp-content\//g, '$1/wp-content/');
   rewritten = rewritten.replace(/([\"\'])(?:(?:\.\.|\.)+\/)+wp-includes\//g, '$1/wp-includes/');

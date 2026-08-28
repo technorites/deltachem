@@ -2,8 +2,17 @@
    DeltaChem Full-Hero Background Carousel Styles (No Arrows, Seamless Cycle)
    ========================================================================== */
 
-/* Full Hero Section Container */
+/* Full Hero Section Container - Hover Immune */
 .elementor-12 .elementor-element.elementor-element-51baec5.deltachem-hero-fullscreen-section,
+.elementor-12 .elementor-element.elementor-element-51baec5,
+.deltachem-hero-bg-carousel,
+.deltachem-bg-slide,
+.deltachem-bg-slide img,
+.deltachem-hero-overlay {
+  position: relative;
+  pointer-events: none !important;
+}
+
 .elementor-12 .elementor-element.elementor-element-51baec5 {
   position: relative !important;
   overflow: hidden !important;
@@ -12,6 +21,15 @@
   align-items: center !important;
   background: #091E23 !important;
   padding: 40px 0 !important;
+}
+
+/* Allow interactive buttons & navigation dots to remain clickable */
+.elementor-12 .elementor-element.elementor-element-51baec5 a,
+.elementor-12 .elementor-element.elementor-element-51baec5 button,
+.elementor-12 .elementor-element.elementor-element-51baec5 .elementor-button,
+.deltachem-hero-dots,
+.deltachem-hero-dot {
+  pointer-events: auto !important;
 }
 
 /* Hide legacy Elementor background slideshow container */
@@ -41,7 +59,7 @@
   height: 100% !important;
   opacity: 0 !important;
   visibility: hidden !important;
-  transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), visibility 1s ease !important;
+  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.2s ease !important;
   z-index: 1 !important;
 }
 
@@ -57,12 +75,15 @@
   object-fit: cover !important;
   object-position: center center !important;
   display: block !important;
-  transform: scale(1);
-  transition: transform 6s cubic-bezier(0.25, 1, 0.5, 1);
+  transform: scale(1.12);
+  filter: brightness(0.85);
+  transition: transform 5.5s cubic-bezier(0.16, 1, 0.3, 1), filter 1.2s ease-in-out !important;
+  will-change: transform, filter, opacity;
 }
 
 .deltachem-bg-slide.active img {
-  transform: scale(1.06);
+  transform: scale(1.02) !important;
+  filter: brightness(1) !important;
 }
 
 /* High-Contrast Overlay for Text Legibility */
