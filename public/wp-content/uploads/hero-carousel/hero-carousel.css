@@ -156,12 +156,9 @@
 }
 
 .deltachem-hero-dot.active .dot-progress {
-  animation: heroDotProgress 4s linear forwards !important;
+  animation: heroDotProgress 4.5s linear forwards !important;
 }
 
-.deltachem-hero-fullscreen-section:hover .deltachem-hero-dot.active .dot-progress {
-  animation-play-state: paused !important;
-}
 
 @keyframes heroDotProgress {
   0% {

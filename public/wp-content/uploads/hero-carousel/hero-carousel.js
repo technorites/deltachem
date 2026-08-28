@@ -24,7 +24,6 @@
     const totalSlides = slides.length;
     const slideDuration = 4500; // 4.5 seconds per slide
     let timer = null;
-    let isPaused = false;
 
     function showSlide(index) {
       if (index < 0) {
@@ -72,26 +71,12 @@
 
     function startTimer() {
       if (timer) clearInterval(timer);
-      if (!isPaused) {
-        timer = setInterval(() => {
-          nextSlide();
-        }, slideDuration);
-      }
+      timer = setInterval(() => {
+        nextSlide();
+      }, slideDuration);
     }
 
     function resetTimer() {
-      startTimer();
-    }
-
-    function pauseCarousel() {
-      isPaused = true;
-      if (timer) clearInterval(timer);
-      heroSection.classList.add('paused');
-    }
-
-    function resumeCarousel() {
-      isPaused = false;
-      heroSection.classList.remove('paused');
       startTimer();
     }
 
@@ -121,17 +106,12 @@
       });
     });
 
-    // Hover pause / resume on desktop
-    heroSection.addEventListener('mouseenter', pauseCarousel);
-    heroSection.addEventListener('mouseleave', resumeCarousel);
-
     // Touch Swipe Support
     let touchStartX = 0;
     let touchEndX = 0;
 
     heroSection.addEventListener('touchstart', (e) => {
       touchStartX = e.changedTouches[0].screenX;
-      pauseCarousel();
     }, { passive: true });
 
     heroSection.addEventListener('touchend', (e) => {
@@ -144,7 +124,6 @@
           prevSlide();
         }
       }
-      resumeCarousel();
     }, { passive: true });
 
     // Keyboard navigation when hero in viewport
