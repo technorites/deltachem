@@ -50,6 +50,8 @@
 	</style>
 	<link rel='stylesheet' id='astra-theme-css-css'
 		href='/wp-content/themes/astra/assets/css/minified/main.min3593.css?ver=4.13.6' media='all' />
+	<link rel='stylesheet' id='deltachem-hero-carousel-css'
+		href='/wp-content/uploads/hero-carousel/hero-carousel.css' media='all' />
 	<style id='astra-theme-css-inline-css'>
 		:root {
 			--ast-post-nav-space: 0;
@@ -4433,9 +4435,27 @@
 
 								<div data-elementor-type="wp-page" data-elementor-id="12" class="elementor elementor-12"
 									data-elementor-post-type="page">
-									<div class="elementor-element elementor-element-51baec5 e-flex e-con-boxed e-con e-parent"
-										data-id="51baec5" data-element_type="container" data-e-type="container"
-										data-settings="{&quot;background_background&quot;:&quot;slideshow&quot;,&quot;background_slideshow_gallery&quot;:[{&quot;id&quot;:1297,&quot;url&quot;:&quot;\/wp-content\/uploads\/2026\/06\/Hero.webp&quot;}],&quot;background_slideshow_slide_duration&quot;:3000,&quot;background_slideshow_loop&quot;:&quot;yes&quot;,&quot;background_slideshow_slide_transition&quot;:&quot;fade&quot;,&quot;background_slideshow_transition_duration&quot;:500}">
+									<div class="elementor-element elementor-element-51baec5 e-flex e-con-boxed e-con e-parent deltachem-hero-fullscreen-section"
+										data-id="51baec5" data-element_type="container" data-e-type="container">
+										
+										<!-- Full-Bleed Hero Background Carousel with 4 Images -->
+										<div class="deltachem-hero-bg-carousel" aria-label="DeltaChem Hero Background Carousel">
+											<div class="deltachem-bg-slide active" data-index="0">
+												<img src="/wp-content/uploads/hero-carousel/Image_2.png" alt="DeltaChem Specialty Fertilizer Innovation and Research" />
+											</div>
+											<div class="deltachem-bg-slide" data-index="1">
+												<img src="/wp-content/uploads/hero-carousel/Image_3.png" alt="Precision Field Application of DeltaChem Fertilizers" loading="lazy" />
+											</div>
+											<div class="deltachem-bg-slide" data-index="2">
+												<img src="/wp-content/uploads/hero-carousel/Image_4.png" alt="Sustainable Crop Nutrition and Soil Enrichment" loading="lazy" />
+											</div>
+											<div class="deltachem-bg-slide" data-index="3">
+												<img src="/wp-content/uploads/hero-carousel/Image_5.png" alt="High Quality Controlled-Release Fertilizer Solutions" loading="lazy" />
+											</div>
+											<div class="deltachem-hero-overlay"></div>
+										</div>
+
+										<!-- Foreground Content: Text & Buttons -->
 										<div class="e-con-inner">
 											<div class="elementor-element elementor-element-7ad1a39 e-con-full e-flex e-con e-child"
 												data-id="7ad1a39" data-element_type="container" data-e-type="container">
@@ -4494,6 +4514,87 @@
 												</div>
 											</div>
 										</div>
+
+										<!-- Aesthetic Indicators / Progress Dots -->
+										<div class="deltachem-hero-dots" role="tablist">
+											<button class="deltachem-hero-dot active" data-index="0" aria-label="Slide 1" type="button"><span class="dot-progress"></span></button>
+											<button class="deltachem-hero-dot" data-index="1" aria-label="Slide 2" type="button"><span class="dot-progress"></span></button>
+											<button class="deltachem-hero-dot" data-index="2" aria-label="Slide 3" type="button"><span class="dot-progress"></span></button>
+											<button class="deltachem-hero-dot" data-index="3" aria-label="Slide 4" type="button"><span class="dot-progress"></span></button>
+										</div>
+
+										<script>
+										(function() {
+											function initHeroSlideshow() {
+												var hero = document.querySelector('.elementor-element-51baec5');
+												if (!hero) return;
+												var slides = hero.querySelectorAll('.deltachem-bg-slide');
+												var dots = hero.querySelectorAll('.deltachem-hero-dot');
+												var total = slides.length;
+												if (!total) return;
+
+												var current = 0;
+												var intervalMs = 4000;
+												var timer = null;
+
+												function setSlide(n) {
+													current = (n + total) % total;
+													for (var i = 0; i < total; i++) {
+														if (i === current) {
+															slides[i].classList.add('active');
+															if (dots[i]) {
+																dots[i].classList.add('active');
+																var p = dots[i].querySelector('.dot-progress');
+																if (p) {
+																	p.style.animation = 'none';
+																	void p.offsetWidth;
+																	p.style.animation = '';
+																}
+															}
+														} else {
+															slides[i].classList.remove('active');
+															if (dots[i]) dots[i].classList.remove('active');
+														}
+													}
+												}
+
+												function startTimer() {
+													if (timer) clearInterval(timer);
+													timer = setInterval(function() {
+														setSlide(current + 1);
+													}, intervalMs);
+												}
+
+												for (var d = 0; d < dots.length; d++) {
+													(function(idx) {
+														dots[idx].addEventListener('click', function(e) {
+															e.preventDefault();
+															e.stopPropagation();
+															setSlide(idx);
+															startTimer();
+														});
+													})(d);
+												}
+
+												hero.addEventListener('mouseenter', function() {
+													if (timer) clearInterval(timer);
+												});
+
+												hero.addEventListener('mouseleave', function() {
+													startTimer();
+												});
+
+												setSlide(0);
+												startTimer();
+											}
+
+											if (document.readyState === 'loading') {
+												document.addEventListener('DOMContentLoaded', initHeroSlideshow);
+											} else {
+												initHeroSlideshow();
+											}
+										})();
+										</script>
 									</div>
 									<div class="elementor-element elementor-element-ebdc62c e-flex e-con-boxed e-con e-parent"
 										data-id="ebdc62c" data-element_type="container" data-e-type="container"
@@ -5550,7 +5651,7 @@
 		/*! This file is auto-generated */
 		var e = "script#wp-emoji-settings", t = document.querySelector(e); if (!(t instanceof HTMLScriptElement)) throw new Error("Element missing: " + e); const r = JSON.parse(t.text), s = (window._wpemojiSettings = r, "wpEmojiSettingsSupports"), o = ["flag", "emoji"]; function i(e) { try { var t = { supportTests: e, timestamp: (new Date).valueOf() }; sessionStorage.setItem(s, JSON.stringify(t)) } catch (e) { } } function c(e, t, n) { e.clearRect(0, 0, e.canvas.width, e.canvas.height), e.fillText(t, 0, 0); t = new Uint32Array(e.getImageData(0, 0, e.canvas.width, e.canvas.height).data); e.clearRect(0, 0, e.canvas.width, e.canvas.height), e.fillText(n, 0, 0); const r = new Uint32Array(e.getImageData(0, 0, e.canvas.width, e.canvas.height).data); return t.every((e, t) => e === r[t]) } function p(e, t) { e.clearRect(0, 0, e.canvas.width, e.canvas.height), e.fillText(t, 0, 0); var n = e.getImageData(16, 16, 1, 1); for (let e = 0; e < n.data.length; e++)if (0 !== n.data[e]) return !1; return !0 } function u(e, t, n, r) { switch (t) { case "flag": return n(e, "\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f", "\ud83c\udff3\ufe0f\u200b\u26a7\ufe0f") ? !1 : !n(e, "\ud83c\udde8\ud83c\uddf6", "\ud83c\udde8\u200b\ud83c\uddf6") && !n(e, "\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f", "\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f"); case "emoji": return !r(e, "\ud83e\u1fac8") }return !1 } function f(e, t, n, r) { let a; const s = (a = "undefined" != typeof WorkerGlobalScope && self instanceof WorkerGlobalScope ? new OffscreenCanvas(300, 150) : document.createElement("canvas")).getContext("2d", { willReadFrequently: !0 }), o = (s.textBaseline = "top", s.font = "600 32px Arial", {}); return e.forEach(e => { o[e] = t(s, e, n, r) }), o } function a(e) { var t = document.createElement("script"); t.src = e, t.defer = !0, document.head.appendChild(t) } r.supports = { everything: !0, everythingExceptFlag: !0 }, new Promise(t => { let n = function () { try { var e = JSON.parse(sessionStorage.getItem(s)); if ("object" == typeof e && "number" == typeof e.timestamp && (new Date).valueOf() < e.timestamp + 604800 && "object" == typeof e.supportTests) return e.supportTests } catch (e) { } return null }(); if (!n) { if ("undefined" != typeof Worker && "undefined" != typeof OffscreenCanvas && "undefined" != typeof URL && URL.createObjectURL && "undefined" != typeof Blob) try { var e = "postMessage(" + f.toString() + "(" + [JSON.stringify(o), u.toString(), c.toString(), p.toString()].join(",") + "));", r = new Blob([e], { type: "text/javascript" }); const a = new Worker(URL.createObjectURL(r), { name: "wpTestEmojiSupports" }); return void (a.onmessage = e => { i(n = e.data), a.terminate(), t(n) }) } catch (e) { } i(n = f(o, u, c, p)) } t(n) }).then(e => { for (const n in e) r.supports[n] = e[n], r.supports.everything = r.supports.everything && r.supports[n], "flag" !== n && (r.supports.everythingExceptFlag = r.supports.everythingExceptFlag && r.supports[n]); var t; r.supports.everythingExceptFlag = r.supports.everythingExceptFlag && !r.supports.flag, r.supports.everything || ((t = r.source || {}).concatemoji ? a(t.concatemoji) : t.wpemoji && t.twemoji && (a(t.twemoji), a(t.wpemoji))) });
 		//# sourceURL=./wp-includes/js/wp-emoji-loader.min.js
-	</script>
+	<script src="/wp-content/uploads/hero-carousel/hero-carousel.js" defer></script>
 </body>
 
 
