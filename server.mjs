@@ -113,9 +113,9 @@ function handleRequest(req, res) {
   res.setHeader('Content-Type', contentType);
 
   // Caching Strategy:
-  // HTML, JS, CSS: revalidate immediately
-  // Other static assets (Fonts, Images): 1 year immutable
-  if (ext === '.html' || ext === '.js' || ext === '.css' || ext === '.mjs') {
+  // HTML: revalidate immediately
+  // Static assets (CSS, JS, Fonts, Images): 1 year immutable
+  if (ext === '.html') {
     res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
   } else {
     res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
